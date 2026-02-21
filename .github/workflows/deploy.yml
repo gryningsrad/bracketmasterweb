@@ -35,6 +35,10 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           ssh-keygen -y -f ~/.ssh/id_ed25519 >/dev/null
           PORT="${DEPLOY_PORT:-22}"
+          echo "DEPLOY_HOST=[$DEPLOY_HOST]"
+          echo "DEPLOY_PORT=[$DEPLOY_PORT]"
+          getent hosts "$DEPLOY_HOST" || true
+          nslookup "$DEPLOY_HOST" || true
           ssh-keyscan -p "$PORT" -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts
 
       - name: Rsync to server
